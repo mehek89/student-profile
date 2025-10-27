@@ -1,35 +1,31 @@
-package com.mehek.student;
+package com.example;
 
-import jakarta.servlet.ServletException;
+import java.io.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 
 @WebServlet("/submit")
 public class StudentServlet extends HttpServlet {
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        String name = req.getParameter("name");
-        String age = req.getParameter("age");
-        String email = req.getParameter("email");
-        String branch = req.getParameter("branch");
-        String about = req.getParameter("about");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        req.setAttribute("name", name);
-        req.setAttribute("age", age);
-        req.setAttribute("email", email);
-        req.setAttribute("branch", branch);
-        req.setAttribute("about", about);
+        // Get values from form
+        String name = request.getParameter("name");
+        String age = request.getParameter("age");
+        String email = request.getParameter("email");
+        String branch = request.getParameter("branch");
+        String about = request.getParameter("about");
 
-        req.getRequestDispatcher("/display.jsp").forward(req, resp);
-    }
+        // Set attributes for JSP
+        request.setAttribute("name", name);
+        request.setAttribute("age", age);
+        request.setAttribute("email", email);
+        request.setAttribute("branch", branch);
+        request.setAttribute("about", about);
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        // Forward to display.jsp
+        RequestDispatcher dispatcher = request.getRequestDispatcher("display.jsp");
+        dispatcher.forward(request, response);
     }
 }
